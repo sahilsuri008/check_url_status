@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Script output file#
+site_status.csv
+
 # C extensions
 *.so
 
