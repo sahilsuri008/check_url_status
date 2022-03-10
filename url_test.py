@@ -18,16 +18,20 @@ for sites in site_list:
     url = site[0]
     try:
         response = request.urlopen(url)
-        #print (url,response.geturl())
-        pattern_match='outage-page'
-        check_status = re.search(pattern_match,response.geturl())
+        pattern_match_un='sws-unavailable'
+        pattern_match_in='sws-invalid'
+        check_status = re.search(pattern_match_un,response.geturl())
         if check_status:
-            status='URL redirected to outage page'
+            status='URL redirected to outage page. SWS-Unavailable'
         else:
             status='URL OK'
+        check_status_in = re.search(pattern_match_in,response.geturl())
+        if check_status:
+            status='Connected but blocked by ACL or not in internal DNS'
+        else:
+            status='URL OK'  
         csv_output_file.write(url+","+response.geturl()+","+status+"\n")
     except: 
-        #print(url)
         csv_output_file.write(url+","+"The site is not reachable, DNS issue or URL not in use\n")
 
 csv_output_file.close()
