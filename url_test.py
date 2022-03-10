@@ -28,7 +28,7 @@ for sites in site_list:
         csv_output_file.write(url+","+response.geturl()+","+status+"\n")
     except: 
         #print(url)
-        csv_output_file.write(url+","+"Could not resolve url,URL non-existant\n")
+        csv_output_file.write(url+","+"The site is not reachable, DNS issue or URL not in use\n")
 
 csv_output_file.close()
 site_list.close()
