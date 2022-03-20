@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from urllib import request
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 import re
 import os
 
@@ -12,7 +12,7 @@ site_list = open("site_list.txt", "r")
 csv_output_file = open("site_status.csv", "a")
 
 #Add header line#
-csv_output_file.write("URL, Redirected URL/Original URL, Status\n")
+csv_output_file.write("URL, Redirected URL/Original URL status, Reason\n")
 
 for sites in site_list:
     site = sites.split()
@@ -34,9 +34,10 @@ for sites in site_list:
 
         csv_output_file.write(url+","+response.geturl()+","+status+"\n")
 
-    except:
-        csv_output_file.write(url+","+"The site is not reachable, DNS issue or URL not in use\n")
+    except HTTPError as e:
+        csv_output_file.write(url+","+"Site Requires authentication or is forbidden, HTTP error "+str(e.code)+"\n")
+    except URLError as e:
+        csv_output_file.write(url+","+"Could not open URL, "+str(e.reason)+"\n")
 
 csv_output_file.close()
 site_list.close()
-
