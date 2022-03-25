@@ -37,7 +37,13 @@ for sites in site_list:
     except HTTPError as e:
         csv_output_file.write(url+","+"Site Requires authentication or is forbidden, HTTP error "+str(e.code)+"\n")
     except URLError as e:
-        csv_output_file.write(url+","+"Could not open URL, "+str(e.reason)+"\n")
+        dns_check_string='not known'
+        dns_check = re.search(dns_check_string,str(e.reason))
+
+        if dns_check:
+            csv_output_file.write(url+","+"Could not open URL, No DNS entry for URL\n")
+        else:
+            csv_output_file.write(url+","+"Could not open URL, "+str(e.reason)+"\n")
 
 csv_output_file.close()
 site_list.close()
